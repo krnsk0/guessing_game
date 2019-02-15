@@ -1,6 +1,8 @@
 /* eslint-disable no-throw-literal */
 /* eslint-disable no-unused-vars */
 
+// code from tests
+
 function generateWinningNumber() {
   return Math.ceil(Math.random() * 100)
 }
@@ -87,3 +89,22 @@ function newGame() {
   return new Game()
 }
 
+// event handlers
+const inputBox = document.querySelector('#guess')
+
+const submitButton = document.querySelector('#submit')
+submitButton.addEventListener('click', function(event) {
+  let guess = inputBox.value
+  inputBox.value = ''
+  console.log('submit clicked', guess)
+})
+
+const restartButton = document.querySelector('#restart')
+restartButton.addEventListener('click', function(event) {
+  console.log('restart clicked')
+})
+
+const hintButton = document.querySelector('#hint')
+hintButton.addEventListener('click', function(event) {
+  console.log('hint clicked');
+})
