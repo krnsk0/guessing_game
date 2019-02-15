@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 describe('generateWinningNumber function', () => {
   it('returns a random number between 1 and 100', () => {
     spyOn(Math, 'random').and.returnValue(0.155);
