@@ -118,7 +118,19 @@ function updateView(state) {
 
   // update previous guesses
   if (state.guesses.length > 0) {
-    guessBox.innerHTML = `Previous guesses: ${state.guesses.join(' ')}`
+
+    // add up/down arrows
+    let guessDisplayArray = []
+    state.guesses.forEach(g => {
+      if (g < state.secret) {
+        guessDisplayArray.push('>' + String(g))
+      } else {
+        guessDisplayArray.push('<' + String(g))
+      }
+    })
+
+    // display
+    guessBox.innerHTML = `Previous guesses: ${guessDisplayArray.join(' ')}`
   } else {
     guessBox.innerHTML = 'Previous guesses: none'
   }
