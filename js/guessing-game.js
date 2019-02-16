@@ -93,13 +93,6 @@ function processGuess(state, guess) {
   return state
 }
 
-// build number line
-function numberLine(state) {
-
-
-  return state
-}
-
 // Globals for page elements
 const inputBox = document.querySelector('#guess')
 const msgBox = document.querySelector('#status_message')
@@ -108,7 +101,6 @@ const guessesLeftText = document.querySelector('#guesses_left')
 const submitButton = document.querySelector('#submit')
 const restartButton = document.querySelector('#restart')
 const hintButton = document.querySelector('#hint')
-
 
 // update views
 function updateView(state) {
