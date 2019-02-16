@@ -43,7 +43,7 @@ function processGuess(state, guess) {
 
   // win case
   else if (guess === state.secret) {
-    state.message = 'You win!'
+    state.message = `You win! The number was ${state.secret}`
     state.messageColor = 'limegreen'
     state.playing = false
     return state
@@ -63,7 +63,7 @@ function processGuess(state, guess) {
 
     // out of guesses?
     if (state.guesses.length >= 5) {
-      state.message = 'You lose.'
+      state.message = `You lose. The number was ${state.secret}`
       state.messageColor = 'crimson'
       state.playing = false
       return state
@@ -182,16 +182,23 @@ hintButton.addEventListener('click', function (event) {
   }
 })
 
-inputBox.onkeypress = function (event) {
+window.onkeypress = function (event) {
   // get key code
   if (!event) event = window.event;
   let keyCode = event.keyCode || event.which;
 
-  // run if it's enter
+  // if playing and enter pressed, submit
   if (state.playing && keyCode === 13) {
     state = processGuess(state, inputBox.value)
     updateView(state)
-    console.log('enter hit; state: ', state)
+    console.log('enter hit; guess submitted; state: ', state)
+  }
+
+  // if won/lost and enter pressed, restart
+  else if (!(state.playing) && keyCode === 13) {
+    state = gameStateFactory()
+    updateView(state)
+    console.log('enter hit; restarting; state: ', state)
   }
 }
 
