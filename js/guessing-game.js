@@ -1,110 +1,168 @@
 /* eslint-disable no-throw-literal */
 /* eslint-disable no-unused-vars */
 
-// code from tests
-
-function generateWinningNumber() {
-  return Math.ceil(Math.random() * 100)
+// makes a new game state
+function gameStateFactory() {
+  return {
+    guesses: [],
+    secret: Math.ceil(Math.random() * 100),
+    playing: true,
+    message: 'New game',
+    messageColor: 'darkgrey',
+  }
 }
 
-function shuffle(array) {
-  // loop from start to end
+// state updater after hint requested
+function makeHint(state) {
+  let array = [state.secret, Math.ceil(Math.random() * 100), Math.ceil(Math.random() * 100)]
+
+  // shuffle
   for (let i = array.length - 1; i > 0; i -= 1) {
-
-    // pick index to shuffle
     let s = Math.floor(Math.random() * (i + 1))
-    // swap
-
     let temp = array[i]
     array[i] = array[s]
     array[s] = temp
   }
-  return array
+
+  // set message in state
+  state.message = array.join(' ')
+  return state
 }
 
-class Game {
-  constructor() {
-    this.playersGuess = null
-    this.pastGuesses = []
-    this.winningNumber = generateWinningNumber()
+// state updater after player guess
+// eslint-disable-next-line complexity
+function processGuess(state, guess) {
+  guess = Number(guess)
+
+  // invalid guess
+  if (guess < 1 || guess > 100 || isNaN(guess)) {
+    state.message = 'Invalid guess.'
+    state.messageColor = 'darkgrey'
+    return state
   }
 
-  difference() {
-    return Math.abs(this.playersGuess - this.winningNumber)
+  // win case
+  else if (guess === state.secret) {
+    state.message = 'You win!'
+    state.messageColor = 'limegreen'
+    state.playing = false
+    return state
   }
 
-  isLower() {
-    return this.playersGuess < this.winningNumber
+  // repeat guess
+  else if (state.guesses.includes(guess)) {
+    state.message = 'Repeat guess.'
+    state.messageColor = 'darkgrey'
+    return state
   }
 
-  playersGuessSubmission(n) {
-    if (n < 1 || n > 100 || typeof n !== 'number') {
-      throw 'That is an invalid guess.'
+  // process as a valid non-winning guess
+  else {
+    // add to guess list
+    state.guesses.push(guess)
+
+    // out of guesses?
+    if (state.guesses.length >= 5) {
+      state.message = 'You lose.'
+      state.messageColor = 'crimson'
+      state.playing = false
+      return state
+    }
+
+    // higher or lower?
+    if (guess < state.secret) {
+      state.message = 'Too low, '
+      state.messageColor = 'darkgrey'
     } else {
-      this.playersGuess = n
-      return this.checkGuess()
-    }
-  }
-
-  checkGuess() {
-    // win case
-    if (this.playersGuess === this.winningNumber) {
-      return 'You Win!'
-    // already guessed...
-    } else if (this.pastGuesses.includes(this.playersGuess)) {
-      return 'You have already guessed that number.'
-    // if not already guessed
-    } else {
-      // add to guesses...
-      this.pastGuesses.push(this.playersGuess)
+      state.message = 'Too high, '
+      state.messageColor = 'darkgrey'
     }
 
-    // have we lost?
-    if (this.pastGuesses.length === 5) {
-      return 'You Lose.'
-    }
-
-    // calculate difference and return
-    let diff = this.difference()
+    // Add warmth message
+    let diff = Math.abs(state.secret - guess)
     if (diff < 10) {
-      return 'You\'re burning up!'
+      state.message += 'but you\'re burning up!'
     } else if (diff < 25) {
-      return 'You\'re lukewarm.'
+      state.message += 'but you\'re lukewarm.'
     } else if (diff < 50) {
-      return 'You\'re a bit chilly.'
+      state.message += 'and you\'re a bit chilly.'
     } else if (diff < 100) {
-      return 'You\'re ice cold!'
+      state.message += 'and you\'re ice cold.'
     }
   }
+  return state
+}
 
-  provideHint() {
-    let hintArray = [this.winningNumber, generateWinningNumber(), generateWinningNumber()]
-    hintArray = shuffle(hintArray)
-    return hintArray
+// build number line
+function numberLine(state) {
+
+
+  return state
+}
+
+// Globals for page elements
+const inputBox = document.querySelector('#guess')
+const msgBox = document.querySelector('#status_message')
+const guessBox = document.querySelector('#previous_guesses_box')
+const guessesLeftText = document.querySelector('#guesses_left')
+
+// update views
+function updateView(state) {
+
+  // update guesses left
+  let guessWordArray = [
+    'Zero guesses left',
+    'One guess left',
+    'Two guesses left',
+    'Three guesses left',
+    'Four guesses left',
+    'Five guesses left'
+  ]
+  guessesLeftText.innerHTML = guessWordArray[5 - state.guesses.length]
+
+  // update previous guesses
+  if (state.guesses.length > 0) {
+    guessBox.innerHTML = `Previous guesses: ${state.guesses.join(' ')}`
+  } else {
+    guessBox.innerHTML = 'Previous guesses: none'
   }
 
-}
+  // update status message
+  msgBox.innerHTML = state.message
+  msgBox.setAttribute('style', `color: ${state.messageColor};`)
 
-function newGame() {
-  return new Game()
-}
-
-// event handlers
-const inputBox = document.querySelector('#guess')
-
-const submitButton = document.querySelector('#submit')
-submitButton.addEventListener('click', function(event) {
-  let guess = inputBox.value
+  // empty the guess box
   inputBox.value = ''
-  console.log('submit clicked', guess)
+}
+
+// ----- START THE GAME -----
+let state = gameStateFactory()
+console.log('new game; state: ', state)
+updateView(state)
+
+// Set up event handlers
+const submitButton = document.querySelector('#submit')
+submitButton.addEventListener('click', function (event) {
+  if (state.playing) {
+    state = processGuess(state, inputBox.value)
+    updateView(state)
+    console.log('submit clicked; state: ', state)
+  }
 })
 
 const restartButton = document.querySelector('#restart')
-restartButton.addEventListener('click', function(event) {
-  console.log('restart clicked')
+restartButton.addEventListener('click', function (event) {
+  state = gameStateFactory()
+  updateView(state)
+  console.log('restart clicked; state: ', state)
 })
 
 const hintButton = document.querySelector('#hint')
-hintButton.addEventListener('click', function(event) {
-  console.log('hint clicked');
+hintButton.addEventListener('click', function (event) {
+  if (state.playing) {
+    state = makeHint(state)
+    updateView(state)
+    console.log('hint clicked; state: ', state)
+  }
 })
+

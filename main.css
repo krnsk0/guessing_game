@@ -2,9 +2,9 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: -130px 0 0 -200px;
+  margin: -140px 0 0 -200px;
   width: 400px;
-  height: 260px;
+  height: 280px;
   font-family: 'Consolas', 'Andale Mono', monospace;
   border: 1px solid;
   background: white;
@@ -17,6 +17,17 @@ body {
   background-position: center;
 }
 
+
+
+.valid {
+  border-bottom: 1px solid darkgrey;
+}
+
+.invalid {
+  border-bottom: 3px solid black;
+}
+
+
 h1, h4, .status_message_box, .previous_guesses, .guess_box, .previous_guesses_box, .buttons{
   text-align: center;
 }
@@ -26,13 +37,11 @@ h3 {
   margin: 25px;
 }
 
-.status_message_box {
+.status_message_box, #guesses_left {
   margin-top: 20px;
   margin-bottom: 20px;
   color: darkgrey;
 }
-
-
 
 .previous_guesses {
   margin: 0px, auto;
@@ -48,8 +57,6 @@ h3 {
   margin: 0px, auto;
   padding: 10px;
 }
-
-
 #guess {
   text-align: center;
   font-family: 'Consolas', 'Andale Mono', monospace;

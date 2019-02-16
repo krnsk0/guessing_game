@@ -9,24 +9,23 @@
 
 <body>
   <div class="game">
-    <h1>Guessing Game</h1>
-    <div class="status_message_box">
-      <span id="status_message">default</span>
-      </br>
-      <span id="guesses_left">Five</span> guesses left
-    </div>
+    <h1 id="title">Guessing Game</h1>
     <div class="previous_guesses">
-      <span>Previous Guesses:</span>
       <span id="previous_guesses_box"></span>
+
+      <span id="guesses_left"></span>
     </div>
     <div class="guess_box">
       <span>Input guess:</span>
-      <input type="text" id="guess" name="guess" minlength="1" maxlength="2"></input>
+      <input type="text" id="guess" name="guess" minlength="1" maxlength="3"></input>
     </div>
     <div class="buttons">
       <input type="button" id="submit" name="submit" value="Submit guess"></input>
       <input type="button" id="restart" name="restart" value="Play again"></input>
       <input type="button" id="hint" name="hint" value="Hint"></input>
+    </div>
+    <div class="status_message_box">
+      <span id="status_message">message</span>
     </div>
   </div>
   <script src='js/guessing-game.js'></script>
