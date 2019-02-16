@@ -27,7 +27,6 @@ body {
   border-bottom: 3px solid black;
 }
 
-
 h1, h4, .status_message_box, .previous_guesses, .guess_box, .previous_guesses_box, .buttons{
   text-align: center;
 }
@@ -40,7 +39,7 @@ h3 {
 .status_message_box, #guesses_left {
   margin-top: 20px;
   margin-bottom: 20px;
-  color: darkgrey;
+  color: black;
 }
 
 .previous_guesses {
@@ -57,6 +56,7 @@ h3 {
   margin: 0px, auto;
   padding: 10px;
 }
+
 #guess {
   text-align: center;
   font-family: 'Consolas', 'Andale Mono', monospace;

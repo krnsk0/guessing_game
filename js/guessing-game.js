@@ -105,6 +105,10 @@ const inputBox = document.querySelector('#guess')
 const msgBox = document.querySelector('#status_message')
 const guessBox = document.querySelector('#previous_guesses_box')
 const guessesLeftText = document.querySelector('#guesses_left')
+const submitButton = document.querySelector('#submit')
+const restartButton = document.querySelector('#restart')
+const hintButton = document.querySelector('#hint')
+
 
 // update views
 function updateView(state) {
@@ -133,6 +137,17 @@ function updateView(state) {
 
   // empty the guess box
   inputBox.value = ''
+
+  // set the border on the restart button
+  if (state.playing) {
+    inputBox.disabled = false;
+    submitButton.setAttribute('style', 'color: black;')
+    hintButton.setAttribute('style', 'color: black;')
+  } else {
+    inputBox.disabled = true;
+    submitButton.setAttribute('style', 'color: darkgrey;')
+    hintButton.setAttribute('style', 'color: darkgrey;')
+  }
 }
 
 // ----- START THE GAME -----
@@ -141,7 +156,6 @@ console.log('new game; state: ', state)
 updateView(state)
 
 // Set up event handlers
-const submitButton = document.querySelector('#submit')
 submitButton.addEventListener('click', function (event) {
   if (state.playing) {
     state = processGuess(state, inputBox.value)
@@ -150,14 +164,12 @@ submitButton.addEventListener('click', function (event) {
   }
 })
 
-const restartButton = document.querySelector('#restart')
 restartButton.addEventListener('click', function (event) {
   state = gameStateFactory()
   updateView(state)
   console.log('restart clicked; state: ', state)
 })
 
-const hintButton = document.querySelector('#hint')
 hintButton.addEventListener('click', function (event) {
   if (state.playing) {
     state = makeHint(state)
