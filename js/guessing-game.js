@@ -7,7 +7,7 @@ function gameStateFactory() {
     guesses: [],
     secret: Math.ceil(Math.random() * 100),
     playing: true,
-    message: 'New game',
+    message: '[enter] to submit guess',
     messageColor: 'darkgrey',
   }
 }
@@ -43,7 +43,7 @@ function processGuess(state, guess) {
 
   // win case
   else if (guess === state.secret) {
-    state.message = `You win! The number was ${state.secret}`
+    state.message = `You win! The number was ${state.secret}.`
     state.messageColor = 'limegreen'
     state.playing = false
     return state
@@ -63,7 +63,7 @@ function processGuess(state, guess) {
 
     // out of guesses?
     if (state.guesses.length >= 5) {
-      state.message = `You lose. The number was ${state.secret}`
+      state.message = `You lose. The number was ${state.secret}.`
       state.messageColor = 'crimson'
       state.playing = false
       return state
