@@ -118,6 +118,8 @@ function updateView(state) {
 
   // update previous guesses
   if (state.guesses.length > 0) {
+    // sort them
+    state.guesses.sort((a, b) => a - b)
 
     // add up/down arrows
     let guessDisplayArray = []
