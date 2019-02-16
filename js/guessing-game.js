@@ -157,6 +157,7 @@ function updateView(state) {
 // ----- START THE GAME -----
 let state = gameStateFactory()
 console.log('new game; state: ', state)
+inputBox.focus();
 updateView(state)
 
 // Set up event handlers
