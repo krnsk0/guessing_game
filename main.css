@@ -17,10 +17,8 @@ body {
   background-position: center;
 }
 
-
-
 .valid {
-  border-bottom: 1px solid darkgrey;
+  border-bottom: 3px solid darkgrey;
 }
 
 .invalid {
