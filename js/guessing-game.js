@@ -178,3 +178,16 @@ hintButton.addEventListener('click', function (event) {
   }
 })
 
+inputBox.onkeypress = function (event) {
+  // get key code
+  if (!event) event = window.event;
+  let keyCode = event.keyCode || event.which;
+
+  // run if it's enter
+  if (state.playing && keyCode === 13) {
+    state = processGuess(state, inputBox.value)
+    updateView(state)
+    console.log('enter hit; state: ', state)
+  }
+}
+
