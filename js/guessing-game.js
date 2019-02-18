@@ -26,7 +26,7 @@ function makeHint(state) {
 
   // set message in state
   state.message = array.join(' ')
-  return state
+  return
 }
 
 // state updater after player guess
@@ -38,7 +38,7 @@ function processGuess(state, guess) {
   if (guess < 1 || guess > 100 || isNaN(guess)) {
     state.message = 'Invalid guess.'
     state.messageColor = 'darkgrey'
-    return state
+    return
   }
 
   // win case
@@ -46,14 +46,14 @@ function processGuess(state, guess) {
     state.message = `You win! The number was ${state.secret}.`
     state.messageColor = 'limegreen'
     state.playing = false
-    return state
+    return
   }
 
   // repeat guess
   else if (state.guesses.includes(guess)) {
     state.message = 'Repeat guess.'
     state.messageColor = 'darkgrey'
-    return state
+    return
   }
 
   // process as a valid non-winning guess
@@ -66,7 +66,7 @@ function processGuess(state, guess) {
       state.message = `You lose. The number was ${state.secret}.`
       state.messageColor = 'crimson'
       state.playing = false
-      return state
+      return
     }
 
     // higher or lower?
@@ -90,7 +90,7 @@ function processGuess(state, guess) {
       state.message += 'and you\'re ice cold.'
     }
   }
-  return state
+  return
 }
 
 // Globals for page elements
@@ -165,7 +165,7 @@ updateView(state)
 // Set up event handlers
 submitButton.addEventListener('click', function (event) {
   if (state.playing) {
-    state = processGuess(state, inputBox.value)
+    processGuess(state, inputBox.value)
     updateView(state)
     console.log('submit clicked; state: ', state)
   }
@@ -174,12 +174,13 @@ submitButton.addEventListener('click', function (event) {
 restartButton.addEventListener('click', function (event) {
   state = gameStateFactory()
   updateView(state)
+  inputBox.focus();
   console.log('restart clicked; state: ', state)
 })
 
 hintButton.addEventListener('click', function (event) {
   if (state.playing) {
-    state = makeHint(state)
+    makeHint(state)
     updateView(state)
     console.log('hint clicked; state: ', state)
   }
@@ -192,7 +193,7 @@ window.onkeypress = function (event) {
 
   // if playing and enter pressed, submit
   if (state.playing && keyCode === 13) {
-    state = processGuess(state, inputBox.value)
+    processGuess(state, inputBox.value)
     updateView(state)
     console.log('enter hit; guess submitted; state: ', state)
   }
@@ -201,6 +202,7 @@ window.onkeypress = function (event) {
   else if (!(state.playing) && keyCode === 13) {
     state = gameStateFactory()
     updateView(state)
+    inputBox.focus();
     console.log('enter hit; restarting; state: ', state)
   }
 }
